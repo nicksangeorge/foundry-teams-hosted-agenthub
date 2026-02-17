@@ -18,40 +18,27 @@ The only compute you deploy is a single lightweight bot proxy on Container Apps.
 
 ```mermaid
 flowchart TB
-    subgraph Teams["Microsoft Teams"]
-        User["User sends message\n/ops, /menu, or auto-routed"]
+    User(["User in Teams"])
+    Bot["Bot Service"]
+    Proxy["Bot Proxy (.NET 8)"]
+    Orch["Orchestrator (LangGraph)"]
+    Ops["Ops Agent (LangGraph)"]
+    Menu["Menu Agent (Agent Framework)"]
+    LLM[("Azure OpenAI gpt-4o-mini")]
+
+    User -->|message| Bot
+    Bot -->|HTTP POST| Proxy
+    Proxy -.->|SSE stream| Bot
+    Bot -.->|stream + cards| User
+
+    subgraph Foundry["Azure AI Foundry Hosted Agents"]
+        Proxy -->|Responses API| Orch
+        Orch -->|tool call| Ops
+        Orch -->|tool call| Menu
+        Ops --> LLM
+        Menu --> LLM
+        Orch --> LLM
     end
-
-    Bot["Azure Bot Service\n(F0, SingleTenant)"]
-
-    subgraph ACA["Azure Container Apps"]
-        Proxy[".NET 8 Custom Engine Agent\n(ContosoAgent.cs)"]
-        Features["Prefix routing | SSE streaming relay\nImage analysis | Adaptive Cards | Emoji reactions"]
-    end
-
-    subgraph Foundry["Azure AI Foundry — Hosted Agent Service"]
-        Orch["Orchestrator Agent\n(LangGraph)\nReAct tool-calling + routing"]
-        Ops["Ops Agent\n(LangGraph)"]
-        Menu["Menu Agent\n(Agent Framework)"]
-        LLM["Azure OpenAI\n(gpt-4o-mini)"]
-    end
-
-    User -- "message" --> Bot
-    Bot -- "HTTP POST" --> Proxy
-    Proxy -. "streaming tokens + Adaptive Cards" .-> Bot
-    Bot -. "streaming tokens + Adaptive Cards" .-> User
-    Proxy -- "Responses API (SSE)" --> Orch
-    Orch -- "tool call" --> Ops
-    Orch -- "tool call" --> Menu
-    Ops --> LLM
-    Menu --> LLM
-    Orch --> LLM
-
-    style Teams fill:#1a1a2e,stroke:#e94560,color:#fff
-    style ACA fill:#16213e,stroke:#0f3460,color:#fff
-    style Foundry fill:#0f3460,stroke:#533483,color:#fff
-    style Bot fill:#e94560,stroke:#e94560,color:#fff
-    style LLM fill:#533483,stroke:#533483,color:#fff
 ```
 
 ## What's Included
