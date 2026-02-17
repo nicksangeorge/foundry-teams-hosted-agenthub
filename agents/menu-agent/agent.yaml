@@ -1,0 +1,27 @@
+# Contoso Menu & Marketing Agent - azd Agent Definition
+name: menu-agent
+displayName: Contoso Menu & Marketing Agent
+description: |
+  Creative marketing and menu suggestion agent for Contoso Restaurants.
+  Handles promotional campaigns, menu innovation, and brand marketing.
+
+container:
+  dockerfile: Dockerfile
+  context: .
+
+resources:
+  cpu: "1"
+  memory: "2Gi"
+
+environmentVariables:
+  AZURE_AI_PROJECT_ENDPOINT: ${AZURE_AI_PROJECT_ENDPOINT}
+  AZURE_AI_MODEL_DEPLOYMENT_NAME: ${AZURE_AI_MODEL_DEPLOYMENT_NAME:-gpt-4o-mini}
+  AZURE_AI_ENDPOINT: ${AZURE_AI_ENDPOINT}
+
+protocols:
+  - name: responses
+    version: v1
+
+scaling:
+  minReplicas: 1
+  maxReplicas: 2

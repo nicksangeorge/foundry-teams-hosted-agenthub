@@ -1,0 +1,24 @@
+# YUM Ops Agent - Dependencies
+# For LangGraph Hosted Agent with Azure AI Foundry
+
+# Core LangGraph and LangChain
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-openai>=0.2.0
+
+# Azure AI Foundry native LangChain integration
+langchain-azure-ai>=1.0.0
+
+# Azure AI Foundry Hosting Adapter
+azure-ai-agentserver-langgraph>=1.0.0b10
+azure-ai-agentserver-core>=1.0.0b1
+
+# Azure Identity for authentication
+azure-identity>=1.15.0
+
+# ASGI server
+uvicorn[standard]>=0.30.0
+
+# Environment variable loading
+python-dotenv>=1.0.0

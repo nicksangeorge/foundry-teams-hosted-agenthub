@@ -1,0 +1,67 @@
+# Build outputs
+bin/
+obj/
+node_modules/
+dist/
+publish/
+
+# IDE
+.vs/
+*.user
+*.suo
+.idea/
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+*.egg-info/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+appsettings.json
+!appsettings.template.json
+!appsettings.Development.json
+
+# Temp files
+nul
+tmpclaude-*
+*.tmp
+tmp-*.json
+
+# Test / scratch files
+test_*.py
+req*.json
+resp_*.txt
+exemption-*.json
+patch-*.json
+improvements.md
+hosted_agents_learnings.md
+copilot_learning_*.md
+logs/
+scripts/test-*.ps1
+scripts/test-*.py
+scripts/create-bot.py
+
+# Compiled ARM templates (generated from Bicep)
+infra/main.json
+
+# azd logs
+azd-*.log
+
+# Build artifacts
+appPackage/build/
+
+# Packages
+*.zip
+*.nupkg
+
+# OS
+.DS_Store
+Thumbs.db

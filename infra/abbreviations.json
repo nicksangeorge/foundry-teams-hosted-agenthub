@@ -1,0 +1,9 @@
+{
+  "resourceGroup": "rg-",
+  "cognitiveServicesAccount": "ai-",
+  "containerRegistry": "cr",
+  "containerApp": "ca-",
+  "containerAppsEnvironment": "cae-",
+  "botService": "bot-",
+  "logAnalyticsWorkspace": "log-"
+}

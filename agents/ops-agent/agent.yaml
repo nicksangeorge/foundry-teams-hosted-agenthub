@@ -1,0 +1,27 @@
+# Contoso Ops Agent - azd Agent Definition
+name: ops-agent
+displayName: Contoso Ops Agent
+description: |
+  Operational Q&A agent for Contoso Restaurants with chain-of-thought reasoning.
+  Handles store performance metrics, KPIs, and operational insights.
+
+container:
+  dockerfile: Dockerfile
+  context: .
+
+resources:
+  cpu: "1"
+  memory: "2Gi"
+
+environmentVariables:
+  AZURE_AI_PROJECT_ENDPOINT: ${AZURE_AI_PROJECT_ENDPOINT}
+  AZURE_AI_MODEL_DEPLOYMENT_NAME: ${AZURE_AI_MODEL_DEPLOYMENT_NAME:-gpt-4o-mini}
+  AZURE_AI_ENDPOINT: ${AZURE_AI_ENDPOINT}
+
+protocols:
+  - name: responses
+    version: v1
+
+scaling:
+  minReplicas: 1
+  maxReplicas: 2

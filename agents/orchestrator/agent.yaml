@@ -1,0 +1,32 @@
+# Contoso Orchestrator Agent - azd Agent Definition
+name: orchestrator-agent
+displayName: Contoso Orchestrator Agent
+description: |
+  Central routing agent that classifies user intent and delegates to
+  specialized sub-agents (Ops, Menu) using ReAct tool-calling.
+
+container:
+  dockerfile: Dockerfile
+  context: .
+
+resources:
+  cpu: "1"
+  memory: "2Gi"
+
+environmentVariables:
+  AZURE_AI_PROJECT_ENDPOINT: ${AZURE_AI_PROJECT_ENDPOINT}
+  AZURE_AI_MODEL_DEPLOYMENT_NAME: ${AZURE_AI_MODEL_DEPLOYMENT_NAME:-gpt-4o-mini}
+  AZURE_AI_ENDPOINT: ${AZURE_AI_ENDPOINT}
+  FOUNDRY_PROJECT_ENDPOINT: ${FOUNDRY_PROJECT_ENDPOINT}
+  OPS_AGENT_NAME: ${OPS_AGENT_NAME:-ContosoOpsAgent}
+  OPS_AGENT_VERSION: ${OPS_AGENT_VERSION:-1}
+  MENU_AGENT_NAME: ${MENU_AGENT_NAME:-ContosoMenuAgent}
+  MENU_AGENT_VERSION: ${MENU_AGENT_VERSION:-1}
+
+protocols:
+  - name: responses
+    version: v1
+
+scaling:
+  minReplicas: 1
+  maxReplicas: 2

@@ -1,0 +1,5 @@
+# Contoso Menu & Marketing Agent - Dependencies
+# Matches official foundry-samples/samples/python/hosted-agents/agent-framework pattern
+azure-ai-agentserver-agentframework==1.0.0b12
+python-dotenv
+azure-identity

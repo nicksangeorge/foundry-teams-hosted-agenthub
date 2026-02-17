@@ -1,0 +1,3 @@
+# Dependencies for deploy_hosted_agents.py
+azure-ai-projects>=1.0.0b1
+azure-identity>=1.15.0

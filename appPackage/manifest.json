@@ -1,0 +1,57 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.17",
+  "version": "1.0.0",
+  "id": "${{BOT_ID}}",
+  "developer": {
+    "name": "Contoso Restaurants",
+    "websiteUrl": "https://github.com/nicksangeorge/foundry-teams-hosted-agenthub",
+    "privacyUrl": "https://github.com/nicksangeorge/foundry-teams-hosted-agenthub",
+    "termsOfUseUrl": "https://github.com/nicksangeorge/foundry-teams-hosted-agenthub"
+  },
+  "name": {
+    "short": "Contoso Agent Hub",
+    "full": "Contoso Restaurants Multi-Agent Teams Hub"
+  },
+  "description": {
+    "short": "AI agents for restaurant operations and marketing",
+    "full": "A multi-agent Teams app with an Ops Agent for operational Q&A and a Menu & Marketing Agent for creative campaigns. Powered by Azure AI Foundry Hosted Agents with LangGraph, featuring streaming responses, emoji reactions, image analysis, and Adaptive Cards."
+  },
+  "icons": {
+    "outline": "outline.png",
+    "color": "color.png"
+  },
+  "accentColor": "#0078D4",
+  "bots": [
+    {
+      "botId": "${{BOT_ID}}",
+      "scopes": ["personal"],
+      "supportsFiles": true,
+      "isNotificationOnly": false,
+      "commandLists": [
+        {
+          "scopes": ["personal"],
+          "commands": [
+            {
+              "title": "/ops",
+              "description": "Ask the Ops Agent about store performance, metrics, and operations"
+            },
+            {
+              "title": "/menu",
+              "description": "Ask the Menu Agent for marketing ideas and menu suggestions"
+            },
+            {
+              "title": "/help",
+              "description": "Show available commands and usage information"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "permissions": ["identity", "messageTeamMembers"],
+  "validDomains": [
+    "token.botframework.com"
+  ],
+  "defaultInstallScope": "personal"
+}
