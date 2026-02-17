@@ -16,53 +16,42 @@ The only compute you deploy is a single lightweight bot proxy on Container Apps.
 
 ## Architecture
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│                      Microsoft Teams                         │
-│                                                              │
-│   User sends message ──▶ /ops, /menu, or auto-routed        │
-│   ◀── Streaming tokens appear in real-time                   │
-│   ◀── Adaptive Card follows (KPI dashboard / creative brief) │
-└──────────────────────┬───────────────────────────────────────┘
-                       │
-              Azure Bot Service (F0, SingleTenant)
-                       │
-                       ▼
-         ┌──────────────────────────────┐
-         │  .NET 8 Custom Engine Agent  │
-         │  (Azure Container Apps)      │
-         │                              │
-         │  ┌────────────────────────┐  │
-         │  │ ContosoAgent.cs        │  │
-         │  │  • Prefix routing      │  │
-         │  │  • SSE streaming relay │  │
-         │  │  • Image analysis      │  │
-         │  │  • Adaptive Cards      │  │
-         │  │  • Emoji reactions     │  │
-         │  └───────────┬────────────┘  │
-         └──────────────┼───────────────┘
-                        │
-           Responses API (SSE stream)
-                        │
-                        ▼
-         ┌──────────────────────────────────────┐
-         │  Azure AI Foundry                     │
-         │  Hosted Agent Service                 │
-         │                                       │
-         │  ┌──────────────────────────────────┐ │
-         │  │ Orchestrator Agent (LangGraph)    │ │
-         │  │ ReAct tool-calling + routing      │ │
-         │  └────────┬───────────────┬─────────┘ │
-         │           │               │            │
-         │  ┌────────▼─────┐ ┌──────────▼────────┐│
-         │  │ Ops Agent    │ │ Menu Agent        ││
-         │  │ (LangGraph)  │ │ (Agent Framework) ││
-         │  └──────┬───────┘ └──────────┬────────┘│
-         │         └────────┬───────┘            │
-         │                  ▼                    │
-         │           Azure OpenAI                │
-         │          (gpt-4o-mini)                │
-         └──────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Teams["Microsoft Teams"]
+        User["User sends message\n/ops, /menu, or auto-routed"]
+    end
+
+    Bot["Azure Bot Service\n(F0, SingleTenant)"]
+
+    subgraph ACA["Azure Container Apps"]
+        Proxy[".NET 8 Custom Engine Agent\n(ContosoAgent.cs)"]
+        Features["Prefix routing | SSE streaming relay\nImage analysis | Adaptive Cards | Emoji reactions"]
+    end
+
+    subgraph Foundry["Azure AI Foundry — Hosted Agent Service"]
+        Orch["Orchestrator Agent\n(LangGraph)\nReAct tool-calling + routing"]
+        Ops["Ops Agent\n(LangGraph)"]
+        Menu["Menu Agent\n(Agent Framework)"]
+        LLM["Azure OpenAI\n(gpt-4o-mini)"]
+    end
+
+    User -- "message" --> Bot
+    Bot -- "HTTP POST" --> Proxy
+    Proxy -. "streaming tokens + Adaptive Cards" .-> Bot
+    Bot -. "streaming tokens + Adaptive Cards" .-> User
+    Proxy -- "Responses API (SSE)" --> Orch
+    Orch -- "tool call" --> Ops
+    Orch -- "tool call" --> Menu
+    Ops --> LLM
+    Menu --> LLM
+    Orch --> LLM
+
+    style Teams fill:#1a1a2e,stroke:#e94560,color:#fff
+    style ACA fill:#16213e,stroke:#0f3460,color:#fff
+    style Foundry fill:#0f3460,stroke:#533483,color:#fff
+    style Bot fill:#e94560,stroke:#e94560,color:#fff
+    style LLM fill:#533483,stroke:#533483,color:#fff
 ```
 
 ## What's Included
