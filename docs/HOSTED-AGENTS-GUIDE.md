@@ -102,7 +102,7 @@ The bot references agents by name and version in `appsettings.json`:
 ```json
 {
   "Foundry": {
-    "ProjectEndpoint": "https://your-project.ai.azure.com",
+    "ProjectEndpoint": "https://<account>.services.ai.azure.com/api/projects/<project>",
     "OpsAgentName": "ContosoOpsAgent",
     "OpsAgentVersion": "1",
     "MenuAgentName": "ContosoMenuAgent",
@@ -377,7 +377,7 @@ from azure.ai.projects.models import (
 from azure.identity import DefaultAzureCredential
 
 client = AIProjectClient(
-    endpoint="https://your-project.ai.azure.com",
+    endpoint="https://<account>.services.ai.azure.com/api/projects/<project>",
     credential=DefaultAzureCredential()
 )
 
@@ -423,7 +423,7 @@ The `scripts/postdeploy.ps1` hook automates steps 1–3:
 cd agents/ops-agent
 
 # Set required environment variables
-export AZURE_OPENAI_ENDPOINT="https://your-ai-endpoint.cognitiveservices.azure.com"
+export AZURE_OPENAI_ENDPOINT="https://<account>.services.ai.azure.com/"
 export AZURE_AI_MODEL_DEPLOYMENT_NAME="gpt-4o-mini"
 export OPENAI_API_VERSION="2025-03-01-preview"
 

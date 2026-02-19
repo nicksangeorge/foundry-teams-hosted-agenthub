@@ -1,7 +1,7 @@
 # Azure AI Foundry Hosted Agents — Complete API Reference & Fix Plan
 
 Date: 2026-02-17
-Sources: Microsoft Learn docs (fetched 2026-02-17), workspace learnings, exhaustive REST API testing
+Sources: Microsoft Learn docs (fetched 2026-02-17), project deployment learnings, exhaustive REST API testing
 
 ---
 
@@ -232,7 +232,7 @@ Response path: `properties.agentIdentity.agentIdentityId` -> service principal o
 
 ---
 
-## 5. CURRENT STATE (from workspace docs, as of 2026-02-17)
+## 5. CURRENT STATE (from project deployment docs, as of 2026-02-17)
 
 ### Environment: `rg-contoso-agents-e2e` (re-provisioned as `contoso-agents-v2`)
 - AI Account: `ai-g3ry5s6ib3wye`
@@ -420,7 +420,7 @@ The platform may not re-pull `:v1` if it has a cached layer from the first pull.
 
 4. **Can't delete a running deployment via REST either.** `delete-deployment` is CLI-only.
 
-5. **Capability hosts can't be updated.** Delete and recreate. Project-level capability hosts trigger ML Hub auto-creation which can be policy-blocked.
+5. **Capability hosts can't be updated.** Delete and recreate. This template uses an account-level capability host for hosted agents.
 
 6. **Agent identity is separate from project MI.** Hosted containers run under the auto-generated agent identity (service principal). This identity needs `Cognitive Services OpenAI User` + `Azure AI Developer` on the AI account.
 
