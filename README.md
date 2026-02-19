@@ -252,7 +252,7 @@ contoso-multiagent-teams/
 - **Orchestrator cascading timeout**: If the orchestrator routes to the menu agent, the sub-agent call may itself time out, causing the orchestrator to exceed 100s total.
 - **Capability host API version**: The `enablePublicHostingEnvironment` property required for hosted agents is only available in the `2025-10-01-preview` REST API, not in the `2025-04-01-preview` Bicep schema. The `postprovision` hook creates it via REST.
 - **Agent identity RBAC**: Foundry auto-creates a service principal (`<account>-<project>-AgentIdentity`) for hosted agent containers. This identity needs `Cognitive Services OpenAI User` and `Azure AI Developer` roles, but it is created asynchronously after capability host provisioning. The `postprovision` hook assigns these roles, but on first deployment they may not be available yet.
-- **Do not reuse account names after deletion**: Deleting and recreating an Azure AI Foundry account with the same name can leave stale internal state (the `@AML` synthetic workspace). Use a new azd environment name to generate fresh resource names.
+- **Do not reuse account names after deletion**: Deleting and recreating an Azure AI Foundry account with the same name can leave stale internal platform metadata. Use a new azd environment name to generate fresh resource names.
 
 ## Customization
 

@@ -427,8 +427,8 @@ appsettings.json              # Generated from template — gitignored
 | `BOT_APP_ID` | Entra ID app client ID | `abcdef01-...` |
 | `BOT_APP_SECRET` | Entra ID app client secret | `***` |
 | `TENANT_ID` | Entra ID tenant | `98765432-...` |
-| `FOUNDRY_PROJECT_ENDPOINT` | Foundry project URL | `https://....ai.azure.com` |
-| `AI_ENDPOINT` | Azure AI endpoint | `https://....cognitiveservices.azure.com` |
+| `FOUNDRY_PROJECT_ENDPOINT` | Foundry project URL | `https://<account>.services.ai.azure.com/api/projects/<project>` |
+| `AI_ENDPOINT` | Azure AI endpoint | `https://<account>.services.ai.azure.com/` |
 | `FOUNDRY_ACR` | Container registry | `myacr.azurecr.io` |
 | `OPS_AGENT_NAME` | Ops agent name in Foundry | `ContosoOpsAgent` |
 | `MENU_AGENT_NAME` | Menu agent name in Foundry | `ContosoMenuAgent` |
