@@ -7,7 +7,7 @@ using Azure.Core;
 namespace ContosoAgentBot.Services;
 
 /// <summary>
-/// Service for invoking Foundry Hosted Agents via the Responses API
+/// Service for invoking Microsoft Foundry Hosted Agents via the Responses API
 /// </summary>
 public class FoundryAgentService : IFoundryAgentService
 {
@@ -96,7 +96,7 @@ public class FoundryAgentService : IFoundryAgentService
     {
         _logger.LogInformation("Starting streaming invocation of agent {AgentName} v{Version}", agentName, agentVersion);
 
-        // Get access token for Foundry
+        // Get access token for Microsoft Foundry
         var accessToken = await GetAccessTokenAsync(cancellationToken);
 
         // Hosted Agents use the agent_reference pattern with /openai/responses endpoint
@@ -268,12 +268,12 @@ public class FoundryAgentService : IFoundryAgentService
         {
             _logger.LogInformation("Invoking hosted agent {AgentName} v{Version} for conversation {ConversationId}", agentName, agentVersion, conversationId);
 
-            // Get access token for Foundry
+            // Get access token for Microsoft Foundry
             var accessToken = await GetAccessTokenAsync(cancellationToken);
 
             // Hosted Agents use the agent_reference pattern with /openai/responses endpoint
             var responsesUrl = $"{_projectEndpoint}/openai/responses?api-version=2025-11-15-preview";
-            _logger.LogInformation("Calling Foundry API: {Url}", responsesUrl);
+            _logger.LogInformation("Calling Microsoft Foundry API: {Url}", responsesUrl);
 
             // Build request with agent_reference format
             var requestBody = new
@@ -290,11 +290,11 @@ public class FoundryAgentService : IFoundryAgentService
                 Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
             };
 
-            // Use Bearer token authentication for Foundry
+            // Use Bearer token authentication for Microsoft Foundry
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            _logger.LogInformation("Sending request to Foundry...");
+            _logger.LogInformation("Sending request to Microsoft Foundry...");
             var response = await _httpClient.SendAsync(request, cancellationToken);
             var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
             _logger.LogInformation("Response status: {Status}, content length: {Length}", response.StatusCode, responseContent.Length);

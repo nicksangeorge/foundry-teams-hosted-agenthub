@@ -22,7 +22,7 @@ namespace ContosoAgentBot;
 
 /// <summary>
 /// Contoso Restaurants multi-agent bot using the Microsoft 365 Agents SDK.
-/// Routes user messages to Foundry Hosted Agents (Ops / Menu) via SSE streaming,
+/// Routes user messages to Microsoft Foundry Hosted Agents (Ops / Menu) via SSE streaming,
 /// and feeds each chunk back to Teams through the SDK's built-in streaming support.
 /// </summary>
 public class ContosoAgent : AgentApplication
@@ -114,7 +114,7 @@ public class ContosoAgent : AgentApplication
     }
 
     // ══════════════════════════════════════════════════════════════════
-    //  MESSAGE  (prefix routing → Foundry SSE → Teams streaming)
+    //  MESSAGE  (prefix routing → Microsoft Foundry SSE → Teams streaming)
     // ══════════════════════════════════════════════════════════════════
 
     private async Task OnMessageAsync(
@@ -418,7 +418,7 @@ public class ContosoAgent : AgentApplication
     }
 
     /// <summary>
-    /// Streams a Foundry Hosted Agent response back to Teams using the SDK's
+    /// Streams a Microsoft Foundry Hosted Agent response back to Teams using the SDK's
     /// built-in streaming: QueueInformativeUpdateAsync → QueueTextChunk → EndStreamAsync.
     /// </summary>
     private async Task StreamFoundryResponseAsync(

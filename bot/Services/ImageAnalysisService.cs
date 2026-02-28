@@ -99,7 +99,7 @@ public class ImageAnalysisService
 
     /// <summary>
     /// Call the vision model via the Responses API (same endpoint pattern as FoundryAgentService).
-    /// The Foundry project endpoint does NOT support the classic Azure OpenAI
+    /// The Microsoft Foundry project endpoint does NOT support the classic Azure OpenAI
     /// /openai/deployments/{deployment}/chat/completions path — it only supports
     /// the Responses API at /openai/responses with a "model" parameter.
     /// </summary>
@@ -165,7 +165,7 @@ public class ImageAnalysisService
             catch (Exception credEx)
             {
                 diag?.AppendLine($"[vision] TOKEN FAILED: {credEx.GetType().Name}: {credEx.Message}");
-                _logger.LogCritical(credEx, "DefaultAzureCredential failed for AI Foundry");
+                _logger.LogCritical(credEx, "DefaultAzureCredential failed for Microsoft Foundry");
                 return null;
             }
 

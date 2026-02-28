@@ -15,7 +15,7 @@
   },
   "description": {
     "short": "AI agents for restaurant operations and marketing",
-    "full": "A multi-agent Teams app with an Ops Agent for operational Q&A and a Menu & Marketing Agent for creative campaigns. Powered by Azure AI Foundry Hosted Agents with LangGraph, featuring streaming responses, emoji reactions, image analysis, and Adaptive Cards."
+    "full": "A multi-agent Teams app with an Ops Agent for operational Q&A and a Menu & Marketing Agent for creative campaigns. Powered by Microsoft Foundry Hosted Agents with LangGraph, featuring streaming responses, emoji reactions, image analysis, and Adaptive Cards."
   },
   "icons": {
     "outline": "outline.png",

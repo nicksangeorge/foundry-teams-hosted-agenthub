@@ -1,4 +1,4 @@
-# Azure AI Foundry Hosted Agents — Complete API Reference & Fix Plan
+# Microsoft Foundry Hosted Agents — Complete API Reference & Fix Plan
 
 Date: 2026-02-17
 Sources: Microsoft Learn docs (fetched 2026-02-17), project deployment learnings, exhaustive REST API testing
@@ -305,7 +305,7 @@ az containerapp update --name <bot-app> --resource-group <rg> \
   --set-env-vars Foundry__MenuAgentVersion=2 Foundry__OrchestratorAgentVersion=2
 ```
 
-### Option B: Foundry Portal UI
+### Option B: Microsoft Foundry Portal UI
 
 If CLI upgrade is blocked:
 1. Go to https://ai.azure.com -> your project -> Agents
@@ -394,7 +394,7 @@ The platform may not re-pull `:v1` if it has a cached layer from the first pull.
 ```
 
 ### Container provisioning internals
-1. Foundry reads agent definition (image URL, cpu, memory, env vars, protocols)
+1. Microsoft Foundry reads agent definition (image URL, cpu, memory, env vars, protocols)
 2. Platform provisions an Azure Container Apps revision inside the managed ACA environment
 3. Image is pulled from ACR using the **project's system-assigned managed identity** (needs `AcrPull` or `Container Registry Repository Reader`)
 4. Container starts, hosting adapter boots on port 8088

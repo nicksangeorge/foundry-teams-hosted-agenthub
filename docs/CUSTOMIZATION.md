@@ -391,7 +391,7 @@ The vision model is configured in `appsettings.json`:
 }
 ```
 
-Change this to any vision-capable model deployment in your Foundry project.
+Change this to any vision-capable model deployment in your Microsoft Foundry project.
 
 ### Max Tokens
 
@@ -427,19 +427,19 @@ appsettings.json              # Generated from template — gitignored
 | `BOT_APP_ID` | Entra ID app client ID | `abcdef01-...` |
 | `BOT_APP_SECRET` | Entra ID app client secret | `***` |
 | `TENANT_ID` | Entra ID tenant | `98765432-...` |
-| `FOUNDRY_PROJECT_ENDPOINT` | Foundry project URL | `https://<account>.services.ai.azure.com/api/projects/<project>` |
+| `FOUNDRY_PROJECT_ENDPOINT` | Microsoft Foundry project URL | `https://<account>.services.ai.azure.com/api/projects/<project>` |
 | `AI_ENDPOINT` | Azure AI endpoint | `https://<account>.services.ai.azure.com/` |
 | `FOUNDRY_ACR` | Container registry | `myacr.azurecr.io` |
-| `OPS_AGENT_NAME` | Ops agent name in Foundry | `ContosoOpsAgent` |
-| `MENU_AGENT_NAME` | Menu agent name in Foundry | `ContosoMenuAgent` |
-| `ORCHESTRATOR_AGENT_NAME` | Orchestrator agent name in Foundry | `ContosoOrchestratorAgent` |
+| `OPS_AGENT_NAME` | Ops agent name in Microsoft Foundry | `ContosoOpsAgent` |
+| `MENU_AGENT_NAME` | Menu agent name in Microsoft Foundry | `ContosoMenuAgent` |
+| `ORCHESTRATOR_AGENT_NAME` | Orchestrator agent name in Microsoft Foundry | `ContosoOrchestratorAgent` |
 | `MODEL_DEPLOYMENT` | LLM model deployment | `gpt-4o-mini` |
 | `VISION_DEPLOYMENT` | Vision model deployment | `gpt-4o-mini` |
 
 ### Local Development
 
 For local development:
-1. Run `az login` (provides `DefaultAzureCredential` for Foundry calls)
+1. Run `az login` (provides `DefaultAzureCredential` for Microsoft Foundry calls)
 2. Set `appsettings.Development.json` with your bot credentials
 3. Run `dotnet run` — listens on `http://localhost:3978`
 4. Use [Dev Tunnel](https://learn.microsoft.com/azure/developer/dev-tunnels/) or ngrok to expose the endpoint to Bot Service
@@ -469,7 +469,7 @@ builder.Services.AddSingleton<IStorage>(sp =>
     }));
 ```
 
-### Hosted Agents (Foundry)
+### Hosted Agents (Microsoft Foundry)
 
 - **Scaling**: Configured in `agent.yaml` (`minReplicas` / `maxReplicas`)
 - **Cold start**: First request after idle may take 10–30 seconds — the bot's 2-minute timeout accommodates this
@@ -479,4 +479,4 @@ builder.Services.AddSingleton<IStorage>(sp =>
 
 - **Rate limits**: Monitor TPM (tokens per minute) usage in Azure Portal
 - **Model selection**: `gpt-4o-mini` is cost-effective for most use cases; upgrade to `gpt-4o` for complex reasoning
-- **Deployment region**: Place the model deployment in the same region as your Foundry project for lowest latency
+- **Deployment region**: Place the model deployment in the same region as your Microsoft Foundry project for lowest latency

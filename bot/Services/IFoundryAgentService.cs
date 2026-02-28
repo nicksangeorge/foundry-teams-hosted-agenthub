@@ -1,7 +1,7 @@
 namespace ContosoAgentBot.Services;
 
 /// <summary>
-/// Service interface for invoking Foundry Hosted Agents
+/// Service interface for invoking Microsoft Foundry Hosted Agents
 /// </summary>
 public interface IFoundryAgentService
 {
@@ -37,7 +37,7 @@ public interface IFoundryAgentService
 }
 
 /// <summary>
-/// Response from a Foundry Hosted Agent
+/// Response from a Microsoft Foundry Hosted Agent
 /// </summary>
 public class AgentResponse
 {

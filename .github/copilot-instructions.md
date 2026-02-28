@@ -1,6 +1,6 @@
 # Code & Documentation Style Instructions
 
-## Azure AI Foundry — New Resource Model
+## Microsoft Foundry — New Resource Model
 
 This repo uses the **new Microsoft Foundry** resource model (Nov 2025+, preview).
 
@@ -11,7 +11,7 @@ This repo uses the **new Microsoft Foundry** resource model (Nov 2025+, preview)
 - API version: `2025-04-01-preview` or later
 - Endpoint format: `https://<name>.services.ai.azure.com/api/projects/<project>`
 
-Do NOT use the legacy ML Workspaces Hub/Project pattern (`Microsoft.MachineLearningServices/workspaces` with kind Hub/Project). That is Azure AI Studio, not Foundry.
+Do NOT use the legacy ML Workspaces Hub/Project pattern (`Microsoft.MachineLearningServices/workspaces` with kind Hub/Project). That is Azure AI Studio, not Microsoft Foundry.
 
 Reference: https://github.com/azure-ai-foundry/foundry-samples/tree/main/infrastructure/infrastructure-setup-bicep
 
