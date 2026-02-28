@@ -16,7 +16,7 @@ using ContosoAgentBot.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── HttpClient for outbound Foundry API calls ────────────────────
+// ── HttpClient for outbound Microsoft Foundry API calls ────────────────────
 builder.Services.AddHttpClient<IFoundryAgentService, FoundryAgentService>(client =>
 {
     // Hosted agents may take up to 2 minutes to respond (especially on cold start)

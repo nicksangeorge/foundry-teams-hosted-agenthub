@@ -1,6 +1,6 @@
-# Azure AI Foundry Hosted Agents Guide
+# Microsoft Foundry Hosted Agents Guide
 
-> Understanding and working with Azure AI Foundry Hosted Agents in the Contoso Multi-Agent Teams Hub
+> Understanding and working with Microsoft Foundry Hosted Agents in the Contoso Multi-Agent Teams Hub
 
 ---
 
@@ -18,7 +18,7 @@
 
 ## What Are Hosted Agents?
 
-Azure AI Foundry **Hosted Agents** are containerized AI agents that run inside the Foundry Agent Service. They expose a standardized API (the **Responses API**) so any client can invoke them with a consistent protocol, regardless of the agent's internal framework (LangGraph, Semantic Kernel, AutoGen, etc.).
+Microsoft Foundry **Hosted Agents** are containerized AI agents that run inside the Microsoft Foundry Agent Service. They expose a standardized API (the **Responses API**) so any client can invoke them with a consistent protocol, regardless of the agent's internal framework (LangGraph, Semantic Kernel, AutoGen, etc.).
 
 ### Key Characteristics
 
@@ -26,9 +26,9 @@ Azure AI Foundry **Hosted Agents** are containerized AI agents that run inside t
 |--------|---------|
 | **Packaging** | Docker container with your agent code |
 | **Protocol** | Responses API — OpenAI-compatible `/responses` endpoint |
-| **Hosting** | Managed by Foundry — you don't manage VMs or Kubernetes |
+| **Hosting** | Managed by Microsoft Foundry — you don't manage VMs or Kubernetes |
 | **Identity** | Runs with Managed Identity — automatic Azure resource access |
-| **Invocation** | Via `agent_reference` in a Responses API call to your Foundry project |
+| **Invocation** | Via `agent_reference` in a Responses API call to your Microsoft Foundry project |
 | **Scaling** | Configurable min/max replicas in `agent.yaml` |
 | **Versioning** | Each deployment creates a numbered version — clients reference by name + version |
 
@@ -36,16 +36,17 @@ Azure AI Foundry **Hosted Agents** are containerized AI agents that run inside t
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                   Ways to Build Agents in Foundry               │
+│              Ways to Build Agents in Microsoft Foundry           │
 ├──────────────────┬──────────────────┬───────────────────────────┤
 │  Code-first      │  Managed Agent   │  Hosted Agent             │
-│  (your server)   │  (Foundry UI)    │  (this template)          │
+│  (your server)   │  (Microsoft      │  (this template)          │
+│                  │   Foundry UI)    │                            │
 ├──────────────────┼──────────────────┼───────────────────────────┤
-│  You host the    │  Foundry hosts   │  Foundry hosts your       │
-│  HTTP server     │  a managed agent │  Docker container          │
-│  (App Service,   │  configured via  │  with custom code          │
-│  Container Apps) │  portal/SDK      │                            │
-│                  │                  │                            │
+│  You host the    │  Microsoft       │  Microsoft Foundry hosts  │
+│  HTTP server     │  Foundry hosts   │  your Docker container    │
+│  (App Service,   │  a managed agent │  with custom code          │
+│  Container Apps) │  configured via  │                            │
+│                  │  portal/SDK      │                            │
 │  Full control    │  Easy setup,     │  Custom logic +            │
 │  Maximum effort  │  limited custom  │  managed hosting           │
 └──────────────────┴──────────────────┴───────────────────────────┘
@@ -74,7 +75,7 @@ FoundryAgentService.cs
   │          stream: true }
   │
   ▼
-Foundry Responses API
+Microsoft Foundry Responses API
   │  Looks up "ContosoOpsAgent" version "1"
   │  Routes to the corresponding container
   │
@@ -115,7 +116,7 @@ The bot references agents by name and version in `appsettings.json`:
 
 ## The LangGraph Adapter Pattern
 
-The `azure-ai-agentserver-langgraph` package provides a bridge between LangGraph and the Foundry Responses API protocol.
+The `azure-ai-agentserver-langgraph` package provides a bridge between LangGraph and the Microsoft Foundry Responses API protocol.
 
 ### How `from_langgraph()` Works
 
@@ -404,7 +405,7 @@ This is automated by `agents/deploy_hosted_agents.py`.
 
 #### 4. Capability Host Registration
 
-The Foundry project needs a Capability Host to route `agent_reference` requests. This is handled by `scripts/postprovision.ps1` during `azd provision`.
+The Microsoft Foundry project needs a Capability Host to route `agent_reference` requests. This is handled by `scripts/postprovision.ps1` during `azd provision`.
 
 ### Automated Deployment (`azd deploy`)
 
@@ -487,9 +488,9 @@ curl http://localhost:8088/liveness
 
 ## Monitoring and Logs
 
-### Container Logs (Foundry Portal)
+### Container Logs (Microsoft Foundry Portal)
 
-1. Go to [Azure AI Foundry](https://ai.azure.com)
+1. Go to [Microsoft Foundry](https://ai.azure.com)
 2. Navigate to your project → **Agents**
 3. Select the agent → **Logs** tab
 

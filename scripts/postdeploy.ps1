@@ -5,7 +5,7 @@
 .DESCRIPTION
     Called automatically by `azd deploy`. Builds the ops-agent, menu-agent,
     and orchestrator-agent Docker images, pushes them to ACR, and creates
-    hosted agent versions via the Azure AI Foundry SDK.
+    hosted agent versions via the Microsoft Foundry SDK.
 #>
 
 param()

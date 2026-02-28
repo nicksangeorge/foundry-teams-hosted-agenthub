@@ -2,7 +2,7 @@
 name: contoso-agent-hub
 metadata:
   template: contoso-multiagent-teams@1.0.0
-  description: Multi-Agent Teams hub with Azure AI Foundry Hosted Agents
+  description: Multi-Agent Teams hub with Microsoft Foundry Hosted Agents
 
 infra:
   provider: bicep

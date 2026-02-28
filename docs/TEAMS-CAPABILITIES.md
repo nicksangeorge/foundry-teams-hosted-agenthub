@@ -122,7 +122,7 @@ The SDK provides three streaming primitives:
 await turnContext.StreamingResponse.QueueInformativeUpdateAsync(
     $"Contacting the {agentLabel} Agent…", cancellationToken);
 
-// Stream chunks from Foundry agent
+// Stream chunks from Microsoft Foundry agent
 await foreach (var chunk in chunks.WithCancellation(cancellationToken))
 {
     if (!string.IsNullOrEmpty(chunk))

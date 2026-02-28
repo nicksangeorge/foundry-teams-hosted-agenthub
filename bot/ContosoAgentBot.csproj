@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.Agents.Hosting.AspNetCore" Version="1.4.*-*" />
     <PackageReference Include="Microsoft.Agents.Authentication.Msal" Version="1.4.*-*" />
 
-    <!-- Azure identity for Foundry token acquisition -->
+    <!-- Azure identity for Microsoft Foundry token acquisition -->
     <PackageReference Include="Azure.Identity" Version="1.17.1" />
 
     <!-- Adaptive Cards for rich data views -->

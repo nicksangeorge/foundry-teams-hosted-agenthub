@@ -2,13 +2,13 @@
 
 > **Disclaimer:** Provided diagrams, documents, and code are provided AS IS without warranty of any kind and should not be interpreted as an offer or commitment on the part of Microsoft, and Microsoft cannot guarantee the accuracy of any information presented. MICROSOFT MAKES NO WARRANTIES, EXPRESS OR IMPLIED, IN THIS DIAGRAM(s) DOCUMENT(s) CODE SAMPLE(s).
 
-Deploy multiple AI agents to Microsoft Teams using Azure AI Foundry Hosted Agents, the M365 Agents SDK, and Bicep IaC. One `azd provision && azd deploy` gives you a working multi-agent bot in Teams.
+Deploy multiple AI agents to Microsoft Teams using Microsoft Foundry Hosted Agents, the M365 Agents SDK, and Bicep IaC. One `azd provision && azd deploy` gives you a working multi-agent bot in Teams.
 
 ## Why This Template
 
 Agents that work in a notebook need a frontend, auth wiring, and infrastructure before employees can use them. This template puts agents into Microsoft Teams directly. The [M365 Agents SDK](https://github.com/microsoft/agents) handles streaming, Adaptive Cards, file uploads, and reactions. One bot registration serves every agent.
 
-Agent code runs on [Azure AI Foundry Hosted Agents](https://learn.microsoft.com/azure/ai-foundry/agents/overview). You write a Python container in any framework (LangGraph, Agent Framework, Semantic Kernel, AutoGen) and Foundry manages runtime, scaling, tracing, content safety, and identity. This template uses LangGraph for the orchestrator and ops agent, and Microsoft Agent Framework for the menu agent, to show that Hosted Agents are framework-agnostic.
+Agent code runs on [Microsoft Foundry Hosted Agents](https://learn.microsoft.com/azure/ai-foundry/agents/overview). You write a Python container in any framework (LangGraph, Agent Framework, Semantic Kernel, AutoGen) and Microsoft Foundry manages runtime, scaling, tracing, content safety, and identity. This template uses LangGraph for the orchestrator and ops agent, and Microsoft Agent Framework for the menu agent, to show that Hosted Agents are framework-agnostic.
 
 The only compute you deploy is a single lightweight bot proxy on Container Apps. Adding a new agent is another `azd deploy`, not a new infrastructure project.
 
@@ -31,7 +31,7 @@ flowchart TB
     Proxy -.->|SSE stream| Bot
     Bot -.->|stream + cards| User
 
-    subgraph Foundry["Azure AI Foundry Hosted Agents"]
+    subgraph Foundry["Microsoft Foundry Hosted Agents"]
         Proxy -->|Responses API| Orch
         Orch -->|tool call| Ops
         Orch -->|tool call| Menu
@@ -46,11 +46,11 @@ flowchart TB
 | Feature | Description |
 |---------|-------------|
 | **Multi-agent orchestration** | ReAct orchestrator uses LLM tool-calling to classify intent and route to sub-agents |
-| **Streaming responses** | SSE relay pipes Foundry agent tokens to Teams in real-time via the M365 Agents SDK |
+| **Streaming responses** | SSE relay pipes Microsoft Foundry agent tokens to Teams in real-time via the M365 Agents SDK |
 | **Adaptive Cards** | Auto-generated KPI dashboards (Ops) and creative brief cards (Menu) from agent response text |
 | **Image analysis** | Multi-layer image download pipeline with GPT vision analysis for uploaded photos |
 | **Reaction handling** | Contextual follow-up messages when users react to bot responses |
-| **Multi-framework agents** | LangGraph (orchestrator + ops) and Agent Framework (menu) deployed as Foundry Hosted Agents via framework-specific adapters |
+| **Multi-framework agents** | LangGraph (orchestrator + ops) and Agent Framework (menu) deployed as Microsoft Foundry Hosted Agents via framework-specific adapters |
 | **Brand detection** | Automatic brand identification across Contoso Burger, Contoso Tacos, and Contoso Pizza |
 | **Infrastructure-as-Code** | Bicep modules with `azd` lifecycle hooks for single-command provision and deploy |
 | **Prefix commands** | `/ops` and `/menu` bypass the orchestrator for direct agent access |
@@ -116,7 +116,7 @@ azd provision
 ```
 
 This deploys:
-- Azure AI Foundry account (AIServices) with a project and gpt-4o-mini deployment
+- Microsoft Foundry account (AIServices) with a project and gpt-4o-mini deployment
 - Account-level capability host for hosted agent container management
 - Azure Container Registry
 - Azure Container Apps environment and app
@@ -137,7 +137,7 @@ azd deploy
 This:
 - Builds ops-agent, menu-agent, and orchestrator-agent Docker images via ACR build tasks
 - Deploys the .NET bot to Container Apps
-- Creates hosted agent versions in Foundry with `min_replicas=1` (auto-start)
+- Creates hosted agent versions in Microsoft Foundry with `min_replicas=1` (auto-start)
 
 ### 6. Install in Teams
 
@@ -209,7 +209,7 @@ contoso-multiagent-teams/
 │   ├── main.parameters.json           # Parameter bindings
 │   ├── abbreviations.json             # Naming conventions
 │   └── modules/
-│       ├── ai.bicep                   # AI Foundry account + project + model deployment
+│       ├── ai.bicep                   # Microsoft Foundry account + project + model deployment
 │       ├── acr.bicep                  # Container Registry
 │       ├── container-app.bicep        # Container Apps + environment + Log Analytics
 │       ├── rbac.bicep                 # Role assignments (OpenAI User, AI Developer, AcrPull)
@@ -219,12 +219,12 @@ contoso-multiagent-teams/
 │   ├── setup-bot-identity.ps1         # Create Entra ID app registration
 │   ├── package-app.ps1                # Package appPackage for Teams sideloading
 │   ├── postprovision.ps1              # Create capability host + grant agent identity RBAC
-│   └── postdeploy.ps1                 # Build agent images via ACR + deploy to Foundry
+│   └── postdeploy.ps1                 # Build agent images via ACR + deploy to Microsoft Foundry
 │
 └── docs/                              # Documentation
     ├── ARCHITECTURE.md                # System architecture and data flows
     ├── CUSTOMIZATION.md               # How to customize and extend the template
-    ├── HOSTED-AGENTS-GUIDE.md         # Azure AI Foundry Hosted Agents guide
+    ├── HOSTED-AGENTS-GUIDE.md         # Microsoft Foundry Hosted Agents guide
     ├── HOSTED-AGENTS-API-REFERENCE.md # Hosted Agents API reference
     └── TEAMS-CAPABILITIES.md          # Teams bot features and capabilities
 ```
@@ -238,7 +238,7 @@ contoso-multiagent-teams/
 | Hosting Adapters | `azure-ai-agentserver-langgraph`, `azure-ai-agentserver-agentframework` | 1.0.0b10+ / 1.0.0b12+ |
 | AI Models | Azure OpenAI (gpt-4o-mini) | 2025-03-01-preview |
 | Bot Hosting | Azure Container Apps | Single replica by default |
-| Agent Hosting | Azure AI Foundry Hosted Agent Service | Managed containers with auto-scaling |
+| Agent Hosting | Microsoft Foundry Hosted Agent Service | Managed containers with auto-scaling |
 | Bot Registration | Azure Bot Service (F0, SingleTenant) | -- |
 | Container Registry | Azure Container Registry (Basic) | ACR build tasks for cloud-side image builds |
 | Auth | DefaultAzureCredential / MSAL | Azure.Identity 1.17+ |
@@ -251,8 +251,8 @@ contoso-multiagent-teams/
 - **Agent Framework timeout**: The menu agent uses Microsoft Agent Framework, which creates a temporary data-plane agent and thread on each request via `AzureAIAgentClient`. This adds ~40s latency per request and can exceed the 100s proxy timeout. The LangGraph agents (ops, orchestrator) call the LLM directly and respond in ~2-5s.
 - **Orchestrator cascading timeout**: If the orchestrator routes to the menu agent, the sub-agent call may itself time out, causing the orchestrator to exceed 100s total.
 - **Capability host API version**: The `enablePublicHostingEnvironment` property required for hosted agents is only available in the `2025-10-01-preview` REST API, not in the `2025-04-01-preview` Bicep schema. The `postprovision` hook creates it via REST.
-- **Agent identity RBAC**: Foundry auto-creates a service principal (`<account>-<project>-AgentIdentity`) for hosted agent containers. This identity needs `Cognitive Services OpenAI User` and `Azure AI Developer` roles, but it is created asynchronously after capability host provisioning. The `postprovision` hook assigns these roles, but on first deployment they may not be available yet.
-- **Do not reuse account names after deletion**: Deleting and recreating an Azure AI Foundry account with the same name can leave stale internal platform metadata. Use a new azd environment name to generate fresh resource names.
+- **Agent identity RBAC**: Microsoft Foundry auto-creates a service principal (`<account>-<project>-AgentIdentity`) for hosted agent containers. This identity needs `Cognitive Services OpenAI User` and `Azure AI Developer` roles, but it is created asynchronously after capability host provisioning. The `postprovision` hook assigns these roles, but on first deployment they may not be available yet.
+- **Do not reuse account names after deletion**: Deleting and recreating a Microsoft Foundry account with the same name can leave stale internal platform metadata. Use a new azd environment name to generate fresh resource names.
 
 ## Customization
 
@@ -270,7 +270,7 @@ See [docs/CUSTOMIZATION.md](docs/CUSTOMIZATION.md) for details on:
 |----------|-------------|
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture, data flows, auth model |
 | [CUSTOMIZATION.md](docs/CUSTOMIZATION.md) | Customization and extension guide |
-| [HOSTED-AGENTS-GUIDE.md](docs/HOSTED-AGENTS-GUIDE.md) | Azure AI Foundry Hosted Agents deep-dive |
+| [HOSTED-AGENTS-GUIDE.md](docs/HOSTED-AGENTS-GUIDE.md) | Microsoft Foundry Hosted Agents deep-dive |
 | [HOSTED-AGENTS-API-REFERENCE.md](docs/HOSTED-AGENTS-API-REFERENCE.md) | Hosted Agents API reference |
 | [TEAMS-CAPABILITIES.md](docs/TEAMS-CAPABILITIES.md) | Teams bot features |
 
@@ -286,4 +286,4 @@ New agents should include `agent.yaml`, `Dockerfile`, `requirements.txt`, and `m
 
 ---
 
-Built with [M365 Agents SDK](https://github.com/microsoft/agents) and [Azure AI Foundry](https://ai.azure.com).
+Built with [M365 Agents SDK](https://github.com/microsoft/agents) and [Microsoft Foundry](https://ai.azure.com).

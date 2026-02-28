@@ -7,7 +7,7 @@
     via REST API (2025-10-01-preview) with enablePublicHostingEnvironment=true, then
     waits for the data-plane to become ready.
 
-    The capability host is required for the Foundry portal "Start agent deployment"
+    The capability host is required for the Microsoft Foundry portal "Start agent deployment"
     button and for hosted agent container lifecycle management. Without it the portal
     calls to agentContainerActionsResolver return 404.
 

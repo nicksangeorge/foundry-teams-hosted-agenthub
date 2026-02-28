@@ -7,10 +7,10 @@ langchain>=0.3.0
 langchain-core>=0.3.0
 langchain-openai>=0.2.0
 
-# Azure AI Foundry native LangChain integration
+# Microsoft Foundry native LangChain integration
 langchain-azure-ai>=1.0.0
 
-# Azure AI Foundry Hosting Adapter
+# Microsoft Foundry Hosting Adapter
 azure-ai-agentserver-langgraph>=1.0.0b10
 azure-ai-agentserver-core>=1.0.0b1
 

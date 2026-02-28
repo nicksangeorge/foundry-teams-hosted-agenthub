@@ -4,7 +4,7 @@ param aiAccountId string
 @description('Principal ID of the Container App managed identity')
 param containerAppPrincipalId string
 
-@description('Principal ID of the Foundry project managed identity')
+@description('Principal ID of the Microsoft Foundry project managed identity')
 param projectPrincipalId string
 
 @description('Resource ID of the Container Registry')
@@ -14,7 +14,7 @@ param acrId string
 var cognitiveServicesOpenAIUserRoleId = '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
 
 // Azure AI Developer — grants Microsoft.MachineLearningServices/workspaces/agents/action
-// Required for calling the Foundry Agents (Responses) API via hosted agents
+// Required for calling the Microsoft Foundry Agents (Responses) API via hosted agents
 var azureAIDeveloperRoleId = '64702f94-c441-49e6-a78b-ef80e0188fee'
 
 resource aiAccount 'Microsoft.CognitiveServices/accounts@2024-10-01' existing = {
@@ -63,7 +63,7 @@ resource projectAIDeveloperRole 'Microsoft.Authorization/roleAssignments@2022-04
   }
 }
 
-// AcrPull — grants the Foundry project MI permission to pull hosted agent images
+// AcrPull — grants the Microsoft Foundry project MI permission to pull hosted agent images
 var acrPullRoleId = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 
 resource acr 'Microsoft.ContainerRegistry/registries@2023-07-01' existing = {

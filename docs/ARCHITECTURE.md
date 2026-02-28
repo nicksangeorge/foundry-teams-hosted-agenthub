@@ -24,7 +24,7 @@
 The Contoso Multi-Agent Teams Hub is a two-tier architecture:
 
 1. **Frontend Tier** — A .NET 8 Custom Engine Agent running on Azure Container Apps, acting as a Teams bot and streaming relay.
-2. **Backend Tier** — Python agents running as Azure AI Foundry Hosted Agents, invoked via the Responses API. The orchestrator and ops agent use LangGraph; the menu agent uses Microsoft Agent Framework. Both frameworks are wrapped with framework-specific adapters that expose the same Responses API contract.
+2. **Backend Tier** — Python agents running as Microsoft Foundry Hosted Agents, invoked via the Responses API. The orchestrator and ops agent use LangGraph; the menu agent uses Microsoft Agent Framework. Both frameworks are wrapped with framework-specific adapters that expose the same Responses API contract.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -59,7 +59,7 @@ The Contoso Multi-Agent Teams Hub is a two-tier architecture:
                              │
                              ▼
               ┌──────────────────────────────┐
-              │  Azure AI Foundry             │
+              │  Microsoft Foundry            │
               │  Hosted Agent Service         │
               │                              │
               │  ┌─────────────────────────┐ │
@@ -91,13 +91,13 @@ The main bot class, extending `AgentApplication` from the Microsoft 365 Agents S
 | `OnMembersAddedAsync` | Sends a welcome message with usage instructions on bot install |
 | `OnMessageAsync` | Parses commands, handles images, routes to the correct agent, streams responses |
 | `OnReactionsAddedAsync` | Responds contextually to emoji reactions (👍 👎 😄 etc.) |
-| `StreamFoundryResponseAsync` | Opens an SSE stream to a Foundry agent and relays chunks to Teams |
+| `StreamFoundryResponseAsync` | Opens an SSE stream to a Microsoft Foundry agent and relays chunks to Teams |
 | `FallbackDownloadImagesAsync` | Multi-layer image download when the SDK pipeline returns empty |
 | `ParseCommand` | Prefix-based routing with orchestrator fallback for unmatched messages |
 
-### FoundryAgentService.cs — Foundry API Client
+### FoundryAgentService.cs — Microsoft Foundry API Client
 
-Manages all communication with Azure AI Foundry Hosted Agents:
+Manages all communication with Microsoft Foundry Hosted Agents:
 
 - **Token acquisition**: `DefaultAzureCredential` → Bearer token with scope `https://ai.azure.com/.default`
 - **Streaming invocation**: `POST /openai/responses?api-version=2025-11-15-preview` with `stream: true`
@@ -123,11 +123,11 @@ Processes uploaded images through GPT vision:
 
 ### Hosted Agents (Python)
 
-Three agents deployed as containers to Azure AI Foundry. The orchestrator and ops agent use LangGraph; the menu agent uses Microsoft Agent Framework. Foundry treats them identically — each container exposes the Responses API on port 8088 via a framework-specific adapter.
+Three agents deployed as containers to Microsoft Foundry. The orchestrator and ops agent use LangGraph; the menu agent uses Microsoft Agent Framework. Microsoft Foundry treats them identically — each container exposes the Responses API on port 8088 via a framework-specific adapter.
 
 | Agent | File | Framework | Pattern | Specialization |
 |-------|------|-----------|---------|----------------|
-| **Orchestrator Agent** | `agents/orchestrator/main.py` | LangGraph | ReAct `create_react_agent` with `@tool` functions | Intent classification and routing to sub-agents via Foundry API |
+| **Orchestrator Agent** | `agents/orchestrator/main.py` | LangGraph | ReAct `create_react_agent` with `@tool` functions | Intent classification and routing to sub-agents via Microsoft Foundry API |
 | **Ops Agent** | `agents/ops-agent/main.py` | LangGraph | Single-node `reasoning_node` | Operational Q&A with simulated metrics |
 | **Menu Agent** | `agents/menu-agent/main.py` | Agent Framework | `Agent` with `AzureOpenAIChatClient` | Marketing campaigns with brand voice matching |
 
@@ -193,7 +193,7 @@ All agents use structured system prompts with formatting rules optimized for Tea
 
 ### SSE Stream Format
 
-The Foundry Responses API streams events in Server-Sent Events format:
+The Microsoft Foundry Responses API streams events in Server-Sent Events format:
 
 ```
 data: {"output_text_delta": "📈"}
@@ -239,14 +239,14 @@ Orchestrator Agent (ReAct)
     │
     ├── LLM analyzes intent
     │
-    ├── Calls query_ops_agent(question)     ──▶ Foundry API ──▶ Ops Agent
+    ├── Calls query_ops_agent(question)     ──▶ Microsoft Foundry API ──▶ Ops Agent
     │   └── Returns ops response
     │
-    └── Calls query_menu_agent(question)    ──▶ Foundry API ──▶ Menu Agent
+    └── Calls query_menu_agent(question)    ──▶ Microsoft Foundry API ──▶ Menu Agent
         └── Returns menu response
 ```
 
-The orchestrator calls sub-agents through the Foundry Responses API using `agent_reference` routing — the same protocol the .NET bot uses. This means sub-agents don't need to be directly network-accessible to the orchestrator.
+The orchestrator calls sub-agents through the Microsoft Foundry Responses API using `agent_reference` routing — the same protocol the .NET bot uses. This means sub-agents don't need to be directly network-accessible to the orchestrator.
 
 ---
 
@@ -255,7 +255,7 @@ The orchestrator calls sub-agents through the Foundry Responses API using `agent
 The bot uses the Microsoft 365 Agents SDK's built-in streaming support:
 
 ```
-ContosoAgent                    FoundryAgentService              Foundry API
+ContosoAgent                    FoundryAgentService              Microsoft Foundry API
      │                                │                              │
      │ QueueInformativeUpdate          │                              │
      │ ("Contacting Ops Agent…")       │                              │
@@ -396,7 +396,7 @@ Cards are sent as a **follow-up message** after `EndStreamAsync()`, not embedded
 
 ## Hosted Agent Architecture
 
-### Foundry Adapter Pattern
+### Microsoft Foundry Adapter Pattern
 
 Hosted Agents are framework-agnostic containers. Each framework has a corresponding adapter package that wraps your agent in a Responses API-compatible HTTP server. The two patterns used in this template:
 
@@ -416,7 +416,7 @@ workflow.set_entry_point("reasoning")
 workflow.add_conditional_edges("reasoning", should_continue)
 graph = workflow.compile()
 
-# 2. Wrap with Foundry adapter and run
+# 2. Wrap with Microsoft Foundry adapter and run
 hosted_agent = from_langgraph(graph)
 hosted_agent.run()
 ```
@@ -437,7 +437,7 @@ client = AzureOpenAIChatClient(
 )
 agent = Agent(client=client, name="ContosoMenuAgent", instructions=SYSTEM_PROMPT)
 
-# 2. Wrap with Foundry adapter and run
+# 2. Wrap with Microsoft Foundry adapter and run
 hosted_agent = from_agent_framework(agent)
 hosted_agent.run()
 ```
@@ -470,7 +470,7 @@ POST {projectEndpoint}/openai/responses?api-version=2025-11-15-preview
 }
 ```
 
-Foundry routes this to the correct container based on the agent name and version.
+Microsoft Foundry routes this to the correct container based on the agent name and version.
 
 ---
 
@@ -509,7 +509,7 @@ Configuration in `appsettings.json`:
 }
 ```
 
-### Chain 2: Bot → Foundry API
+### Chain 2: Bot → Microsoft Foundry API
 
 ```
 ContosoAgent
@@ -519,16 +519,16 @@ ContosoAgent
   │  └── Production:  Managed Identity (Container Apps)
   │
   ▼ Bearer token (scope: https://ai.azure.com/.default)
-Foundry Responses API
+Microsoft Foundry Responses API
 ```
 
 ### Chain 3: Hosted Agents → Azure OpenAI
 
 ```
-Foundry Hosted Agent (Container)
+Microsoft Foundry Hosted Agent (Container)
   │
   ▼ DefaultAzureCredential
-  │  └── Managed Identity (Foundry-managed)
+  │  └── Managed Identity (Microsoft Foundry-managed)
   │
   ▼ Token provider (scope: https://cognitiveservices.azure.com/.default)
 Azure OpenAI (AzureChatOpenAI / AzureOpenAIChatClient)
@@ -544,13 +544,13 @@ Azure OpenAI (AzureChatOpenAI / AzureOpenAIChatClient)
 azd provision
   │
   ├── Deploy Bicep modules:
-  │   ├── ai.bicep             → AI Services, Foundry project, gpt-4o-mini deployment
+  │   ├── ai.bicep             → AI Services, Microsoft Foundry project, gpt-4o-mini deployment
   │   ├── acr.bicep            → Container Registry (Basic SKU)
   │   ├── container-app.bicep  → Container Apps environment, app, Log Analytics
   │   └── bot-service.bicep    → Bot Service (F0), Teams channel registration
   │
   └── Post-provision hook (postprovision.ps1):
-      └── Register Capability Host for Foundry project
+      └── Register Capability Host for Microsoft Foundry project
 
 azd deploy
   │
@@ -569,7 +569,7 @@ azd deploy
 
 | Module | Resources Created |
 |--------|-------------------|
-| `ai.bicep` | `Microsoft.CognitiveServices/accounts`, Foundry project, model deployment |
+| `ai.bicep` | `Microsoft.CognitiveServices/accounts`, Microsoft Foundry project, model deployment |
 | `acr.bicep` | `Microsoft.ContainerRegistry/registries` (Basic SKU) |
 | `container-app.bicep` | `Microsoft.App/managedEnvironments`, `Microsoft.App/containerApps`, `Microsoft.OperationalInsights/workspaces` |
 | `bot-service.bicep` | `Microsoft.BotService/botServices` (F0 + SingleTenant), Teams channel |
@@ -588,7 +588,7 @@ Resource names follow the abbreviations defined in `infra/abbreviations.json` co
 | **LLM orchestrator routing** | ReAct tool-calling agent replaces brittle keyword matching — handles ambiguous queries, greetings, and multi-domain questions naturally |
 | **SSE streaming relay** | Native Teams streaming UX via the SDK, not polling — lower latency, progressive rendering |
 | **Follow-up cards (not inline)** | Adaptive Cards can't be embedded in a streamed message — they are sent as a separate activity after `EndStreamAsync()` |
-| **DefaultAzureCredential everywhere** | Works with `az login` during development and Managed Identity in production — no secret management needed for Foundry calls |
+| **DefaultAzureCredential everywhere** | Works with `az login` during development and Managed Identity in production — no secret management needed for Microsoft Foundry calls |
 | **4-layer image download** | Teams delivers images via multiple mechanisms depending on how users attach them — the fallback chain handles all cases |
 | **Framework-specific adapters** | `from_langgraph()` and `from_agent_framework()` wrap agents in the Responses API protocol without manual HTTP server code — proves the Hosted Agent abstraction is framework-agnostic |
 | **Multi-framework demonstration** | Using LangGraph and Agent Framework side-by-side shows that the Responses API contract is the boundary, not the framework. Swap frameworks per-agent without changing infrastructure or bot code |

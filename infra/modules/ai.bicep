@@ -1,10 +1,10 @@
   @description('Location for the AI resources')
 param location string
 
-@description('AI Foundry resource name (CognitiveServices account)')
+@description('Microsoft Foundry resource name (CognitiveServices account)')
 param name string
 
-@description('Foundry project name (child of the account)')
+@description('Microsoft Foundry project name (child of the account)')
 param projectName string
 
 @description('Model deployment name')
@@ -12,8 +12,8 @@ param modelDeployment string
 
 param tags object = {}
 
-// Foundry resource — CognitiveServices account with kind AIServices.
-// allowProjectManagement: true is required for the new Foundry resource model (Nov 2025+).
+// Microsoft Foundry resource — CognitiveServices account with kind AIServices.
+// allowProjectManagement: true is required for the new Microsoft Foundry resource model (Nov 2025+).
 // Ref: https://learn.microsoft.com/azure/ai-foundry/how-to/create-resource-template
 // Ref: https://github.com/azure-ai-foundry/foundry-samples/tree/main/infrastructure/infrastructure-setup-bicep/00-basic
 resource aiAccount 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
@@ -42,7 +42,7 @@ resource aiAccount 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
   tags: tags
 }
 
-// Foundry project — child resource under the account.
+// Microsoft Foundry project — child resource under the account.
 // Groups agent deployments, files, and connections for a single use case.
 resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' = {
   parent: aiAccount
@@ -54,7 +54,7 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
   properties: {}
 }
 
-// Model deployment on the Foundry resource
+// Model deployment on the Microsoft Foundry resource
 resource modelDeploy 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview' = {
   parent: aiAccount
   name: modelDeployment
@@ -71,7 +71,7 @@ resource modelDeploy 'Microsoft.CognitiveServices/accounts/deployments@2025-04-0
   }
 }
 
-// Account-level capability host — enables hosted agents on the Foundry resource.
+// Account-level capability host — enables hosted agents on the Microsoft Foundry resource.
 // enablePublicHostingEnvironment is required for hosted agent container provisioning.
 // NOTE: Do NOT create a project-level capability host. The working deployment
 // (rg-yum-fresh-foundry) only has an account-level host. A project-level host
@@ -84,9 +84,9 @@ resource modelDeploy 'Microsoft.CognitiveServices/accounts/deployments@2025-04-0
 // and that property is required for hosted agent container provisioning.
 // See scripts/postprovision.ps1 for the REST-based creation.
 
-// New Foundry endpoint format: https://<name>.services.ai.azure.com/api/projects/<project>
+// New Microsoft Foundry endpoint format: https://<name>.services.ai.azure.com/api/projects/<project>
 // NOTE: aiAccount.properties.endpoint returns the cognitiveservices.azure.com domain,
-// but the Foundry Agents API requires the services.ai.azure.com domain.
+// but the Microsoft Foundry Agents API requires the services.ai.azure.com domain.
 output projectEndpoint string = 'https://${name}.services.ai.azure.com/api/projects/${project.name}'
 output aiEndpoint string = 'https://${name}.services.ai.azure.com/'
 output aiAccountName string = aiAccount.name
